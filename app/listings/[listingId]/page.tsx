@@ -1,11 +1,23 @@
-import React from 'react';
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import getListingById from "@/app/actions/getListingById";
+import EmptyState from "@/app/components/EmptyState";
+import React from "react";
+import ListingClient from "./ListingClient";
 
-const ListingDetailsPage = () => {
-    return (
-        <div>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus ea error reiciendis porro, atque eligendi aliquid assumenda unde quas non minus nesciunt blanditiis sapiente voluptas neque consectetur praesentium autem nam!
-        </div>
-    );
+interface IParams {
+  listingId?: string;
+}
+const ListingDetailsPage = async ({ params }: { params: IParams }) => {
+  const listing = await getListingById(params);
+  const currentUser =await getCurrentUser();
+  if (!listing) {
+    return <EmptyState></EmptyState>;
+  }
+  return (
+    <ListingClient listing={listing} currentUser={currentUser}>
+ 
+    </ListingClient>
+  );
 };
 
 export default ListingDetailsPage;
